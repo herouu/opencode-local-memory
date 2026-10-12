@@ -1,16 +1,5 @@
 # Changelog
 
-本项目的所有重要变更都记录在此文件。
-
-本文件格式遵循 [Keep a Changelog 1.1.0](https://keepachangelog.com/zh-CN/1.1.0/)，
-版本号遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/spec/v2.0.0.html)。
-
-> 本文件由 [semantic-release](https://github.com/semantic-release/semantic-release) 依据
-> [Conventional Commits 1.0.0](https://www.conventionalcommits.org/zh-hans/v1.0.0/) 自动追加，
-> **请勿手工编辑**（唯一例外是下方这一段历史种子）。升版规则见 [VERSIONING.md](VERSIONING.md)。
-
-## [Unreleased]
-
 ## [0.1.0] - 2026-10-13
 
 ### Added
@@ -48,5 +37,19 @@
 - 发行方式：**文件投放 + GitHub**（把 `local-memory.ts` 放进 `~/.config/opencode/plugin/`）。
   npm 发布通道已预留但**默认关闭**（`package.json` 的 `private: true`），启用方式见 [VERSIONING.md](VERSIONING.md)。
 
-[Unreleased]: https://github.com/herouu/opencode-local-memory/compare/v0.1.0...HEAD
+---
+
+## 关于本文件
+
+本文件格式遵循 [Keep a Changelog 1.1.0](https://keepachangelog.com/zh-CN/1.1.0/)，
+版本号遵循 [语义化版本 2.0.0](https://semver.org/lang/zh-CN/spec/v2.0.0.html)。
+
+`0.1.0` 之后的段落由 [semantic-release](https://github.com/semantic-release/semantic-release) 依据
+[Conventional Commits 1.0.0](https://www.conventionalcommits.org/zh-hans/v1.0.0/) 自动追加，
+**请勿手工编辑**（唯一例外是上面这段 `0.1.0` 历史种子）。升版规则见 [VERSIONING.md](VERSIONING.md)。
+
+> 为何"遵循 Keep a Changelog / SemVer"的声明放在文件**末尾**：`@semantic-release/changelog` 只会把新版本段
+> 插入到 `# Changelog` 这一行之后，任何停留在标题下方的散文都会被逐版推到文件中段。保持标题之后立刻是
+> `## [版本]` 段落是唯一稳定的布局。
+
 [0.1.0]: https://github.com/herouu/opencode-local-memory/releases/tag/v0.1.0
