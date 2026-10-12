@@ -1,0 +1,24 @@
+# 依赖 / 构建产物（本插件零依赖，保留以防万一）
+node_modules/
+dist/
+build/
+
+# 运行时产物：调试日志与一次性导入文件（含数据，绝不入库）
+*.log
+*.jsonl
+*.jsonl.processing
+*.jsonl.done-*
+*.db
+*.sqlite
+*.sqlite3
+*.7z
+
+# 编辑器 / 操作系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 环境
+.env
+.env.*
