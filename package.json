@@ -1,0 +1,61 @@
+{
+  "name": "opencode-local-memory",
+  "version": "0.1.0",
+  "private": true,
+  "description": "opencode v2 原生本地记忆插件：跨会话持久化用户消息与工具调用摘要，并在每次模型请求前按关键词相关度注入 <memory> 上下文。单文件、零 npm 依赖、无需构建。",
+  "type": "module",
+  "main": "./local-memory.ts",
+  "exports": {
+    ".": "./local-memory.ts"
+  },
+  "files": [
+    "local-memory.ts",
+    "README.md",
+    "CHANGELOG.md",
+    "VERSIONING.md",
+    "LICENSE",
+    "docs",
+    "tests"
+  ],
+  "engines": {
+    "opencode": ">=2.0.0"
+  },
+  "peerDependencies": {
+    "@opencode/plugin": ">=2 <3"
+  },
+  "peerDependenciesMeta": {
+    "@opencode/plugin": {
+      "optional": true
+    }
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/herouu/opencode-local-memory.git"
+  },
+  "bugs": {
+    "url": "https://github.com/herouu/opencode-local-memory/issues"
+  },
+  "homepage": "https://github.com/herouu/opencode-local-memory#readme",
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "memory",
+    "local-memory",
+    "cross-session"
+  ],
+  "scripts": {
+    "test": "bun tests/harness.mjs",
+    "release": "semantic-release"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^12.0.10",
+    "@semantic-release/npm": "^13.2.0",
+    "@semantic-release/release-notes-generator": "^14.1.1",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
+    "semantic-release": "^25.0.9"
+  }
+}

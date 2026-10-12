@@ -22,6 +22,7 @@
 - [已知坑](#已知坑)
 - [已知局限](#已知局限)
 - [测试](#测试)
+- [版本与发布](#版本与发布)
 - [许可](#许可)
 
 ## 背景：为什么需要它
@@ -175,6 +176,29 @@ bun tests/harness.mjs
 ```
 
 覆盖 11 组共 54 项断言：V2 导出契约、钩子注册、工具注册、写入与去重、工具摘要与噪音跳过、上下文注入与预算、`storage` 读写、`memory` 工具五个 action、容量治理、`storage` 抛错时的健壮性、`cleanup`。
+
+## 版本与发布
+
+**发行方式（当前）**：**文件投放 + GitHub** —— 把 `local-memory.ts` 放进
+`~/.config/opencode/plugin/`（或项目级 `.opencode/plugins/`）即可，不做 npm 分发。
+npm 发布通道**开关已就绪但默认关闭**（`package.json` 的 `"private": true`，版本号仍会照常更新）；
+将来要发 npm 只需把它改成 `false` 并配好 Trusted Publishing(OIDC)，步骤见
+[`VERSIONING.md`](VERSIONING.md#7-将来要发-npm-时怎么开)。
+
+**发版是自动的**：本仓库接入 [semantic-release](https://github.com/semantic-release/semantic-release)，
+版本号由 [Conventional Commits](https://www.conventionalcommits.org/zh-hans/v1.0.0/) 提交信息推导，
+**不人工改版本号**。推到 `main` 即触发，`beta` 分支产出预发布版：
+
+| 提交 | 结果 |
+|---|---|
+| `fix: …` | PATCH（`0.1.0` → `0.1.1`） |
+| `feat: …` | MINOR（`0.1.0` → `0.2.0`） |
+| `feat!: …` / `BREAKING CHANGE:` | MAJOR（0.x 期降级为 MINOR） |
+| `chore:` / `docs:` / `ci:` / `test:` | 不发版 |
+
+流程细节、分支策略、三条版本轴的区分（插件版本 / 存储 schema 版本 / 目标 opencode 版本）、
+以及「不要移动已发布 tag」「不要手改 CHANGELOG」「schema 变更必须写迁移段」等禁令，
+见 **[`VERSIONING.md`](VERSIONING.md)**；逐版变更见 **[`CHANGELOG.md`](CHANGELOG.md)**。
 
 ## 许可
 

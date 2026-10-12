@@ -1,0 +1,57 @@
+name: Release
+
+# 发版流程：Conventional Commits 落到 main / beta 即触发 semantic-release 自动计算版本、更新
+# CHANGELOG.md + package.json、打 tag、建 GitHub Release。规则见 VERSIONING.md。
+on:
+  push:
+    branches:
+      - main
+      - beta
+
+# contents: write —— 推 tag / 建 Release / 回写 CHANGELOG 与 package.json
+# issues + pull-requests: write —— @semantic-release/github 在 Issue/PR 上留发版评论
+# id-token: write —— 为将来切到 npm Trusted Publishing (OIDC + provenance) 预留，当前不发布 npm
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+# 同一分支上的发版串行执行，避免两次 push 并发抢 tag
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: semantic-release
+    runs-on: ubuntu-latest
+    steps:
+      # fetch-depth: 0 —— semantic-release 需要完整历史来定位上一个发布 tag
+      - name: 检出仓库（含全部历史与 tag）
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - name: 安装开发依赖
+        run: npm ci
+
+      - name: 运行离线 harness（54 项断言）
+        run: node tests/harness.mjs
+
+      - name: 发布（语义化版本计算 + tag + GitHub Release）
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 将来启用 npm 发布时（把 package.json 的 private 改为 false）：
+          #   1) 推荐 Trusted Publishing（OIDC），无需长期 token，此时无需任何 npm secret；
+          #   2) 若暂时仍用长期 token，再加下面一行并配置 NPM_TOKEN secret：
+          # NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
