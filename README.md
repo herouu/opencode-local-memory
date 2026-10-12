@@ -1,6 +1,7 @@
 # opencode-local-memory
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/herouu/opencode-local-memory/actions/workflows/ci.yml/badge.svg)](https://github.com/herouu/opencode-local-memory/actions/workflows/ci.yml)
 
 **opencode v2 原生本地记忆插件**：自动把跨会话的用户消息、工具调用摘要存进本机持久存储，并在每次模型请求前按关键词相关度注入一块 `<memory>` 上下文。单文件、**零 npm 依赖**、无需构建。
 

@@ -1,0 +1,56 @@
+name: CI
+
+# PR 与任意分支的 push 都跑测试；发版由 release.yml 负责（它只监听 main / beta）。
+on:
+  push:
+  pull_request:
+
+# 只读权限：CI 不推代码、不发版。发版权限只在 release.yml 里开。
+permissions:
+  contents: read
+
+# 同一 ref 上的旧运行直接取消，省额度
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  node:
+    name: node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # node < 22.18 不支持直接 import .ts（无默认类型剥离），故从 22 起测。
+        node: ["22", "24"]
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v5
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: 安装开发依赖
+        run: npm ci
+
+      - name: 离线 harness（node，mock ctx，不联网）
+        run: node tests/harness.mjs
+
+  bun:
+    name: bun (latest)
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v5
+
+      - name: 安装 Bun（opencode 宿主加载插件用的运行时）
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # 插件零运行时依赖，bun 直接跑 harness 即可，无需 npm ci
+      - name: 离线 harness（bun）
+        run: bun tests/harness.mjs
